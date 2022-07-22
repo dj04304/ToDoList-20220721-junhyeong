@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.springboot2.todolist.domain.toDoList.ToDoListRepository">
+  	<insert id="save" parameterType="com.springboot2.todolist.domain.toDoList.ToDoList"
+  		useGeneratedKeys="true" keyProperty="contentcode"	>
+  		insert into
+  			content_mst
+  		values(
+  			0,
+  			#{content},
+  			#{usercode},
+  			now(),
+  			now()
+  		)
+  	</insert>
+  	
+  	<select id="getToDoListOfIndex" parameterType="Integer" resultType="com.springboot2.todolist.domain.toDoList.ToDoList">
+  		select
+  			cm.contentcode,
+  			cm.content,
+  			cm.usercode,
+  			um.username,
+  			cm.createdate,
+  			cm.updatedate
+  		from
+  			content_mst cm
+  			left outer join user_mst um on(um.usercode = cm.usercode)
+  		order by
+  			cm.createdate desc,
+  			cm.contentcode desc
+  		limit #{index}, 10 
+  	
+  	</select>
+  	<update id="updateToDoList" parameterType="com.springboot2.todolist.domain.toDoList.ToDoList">
+  		update
+  			content_mstf
+  		set
+  			content = #{content},
+  			usercode = #{usercode}
+  		where
+  			contentcode = #{contentcode}
+  			
+  	</update>
+  
+  </mapper>
+  
